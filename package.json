@@ -10,7 +10,7 @@
 		"lint": "biome lint .",
 		"format": "biome format . --write",
 		"test": "bun test",
-    "typecheck": "tsc"
+		"typecheck": "tsc"
 	},
 	"peerDependencies": {
 		"typescript": "^5"
