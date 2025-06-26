@@ -1,21 +1,62 @@
-# name: "Web App monitoring workflow"
+name: "Web App monitoring workflow"
 
-# on:
-#   schedule:
-#     - cron: "0 * * * *"
-#   workflow_dispatch:
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
 
-# jobs:
-#   health_check:
-#     runs-on: ubuntu:latest
-#     steps:
-#       - name: "Check app status"
-#         id: "healthcheck"
-#         uses: jtalk/url-health-check-action@v4
-#         with:
-#           url: https://apps.letexto.com
-#           follow-redirect: true
-#           retry-delay: 5s
-#           max-attempts: 3
-#       - name: "Notify"
-#         if: {{ st}}
+jobs:
+  health_check_success:
+    runs-on: ubuntu:latest
+    env:
+      APP_URL: "https://apps.letexto.com"
+    steps:
+      - name: "Check ${{ env.APP_URL }} status"
+        id: "hc_success"
+        continue-on-error: true
+        uses: jtalk/url-health-check-action@v4
+        with:
+          url: ${{ env.APP_URL }}
+          follow-redirect: true
+          retry-delay: 5s
+          max-attempts: 3
+      - name: "Notify"
+        if: steps.hc_success.outcome == 'failure'
+        uses: dawidd6/action-send-mail@v6
+        with:
+          server_address: ${{ secrets.SERVER_ADDRESS }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          subject: "Alert monitoring on ${{ env.APP_URL }}"
+          to: ${{ vars.NOTIFY_TO }}
+          from: "GitHub Actions Monitoring <no-reply@arolitec.com>"
+          secure: true
+          server_port: 465
+          body: "App at ${{ env.APP_URL }} is no more available"
+  health_check_failure:
+    runs-on: ubuntu:latest
+    env:
+      APP_URL: "https://failure.letexto.com"
+    steps:
+      - name: "Check ${{ env.APP_URL }} status"
+        id: "hc_failure"
+        continue-on-error: true
+        uses: jtalk/url-health-check-action@v4
+        with:
+          url: ${{ env.APP_URL }}
+          follow-redirect: true
+          retry-delay: 5s
+          max-attempts: 3
+      - name: "Notify"
+        if: steps.hc_failure.outcome == 'failure'
+        uses: dawidd6/action-send-mail@v6
+        with:
+          server_address: ${{ secrets.SERVER_ADDRESS }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          subject: "Alert monitoring on ${{ env.APP_URL }}"
+          to: ${{ vars.NOTIFY_TO }}
+          from: "GitHub Actions Monitoring <no-reply@arolitec.com>"
+          body: "App at ${{ env.APP_URL }} is no more available"
+          secure: true
+          server_port: 465
