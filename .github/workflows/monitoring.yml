@@ -7,7 +7,7 @@ on:
 
 jobs:
   health_check_success:
-    runs-on: ubuntu:latest
+    runs-on: ubuntu-latest
     env:
       APP_URL: "https://apps.letexto.com"
     steps:
@@ -34,7 +34,7 @@ jobs:
           server_port: 465
           body: "App at ${{ env.APP_URL }} is no more available"
   health_check_failure:
-    runs-on: ubuntu:latest
+    runs-on: ubuntu-latest
     env:
       APP_URL: "https://failure.letexto.com"
     steps:
