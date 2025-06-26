@@ -1,0 +1,21 @@
+# name: "Web App monitoring workflow"
+
+# on:
+#   schedule:
+#     - cron: "0 * * * *"
+#   workflow_dispatch:
+
+# jobs:
+#   health_check:
+#     runs-on: ubuntu:latest
+#     steps:
+#       - name: "Check app status"
+#         id: "healthcheck"
+#         uses: jtalk/url-health-check-action@v4
+#         with:
+#           url: https://apps.letexto.com
+#           follow-redirect: true
+#           retry-delay: 5s
+#           max-attempts: 3
+#       - name: "Notify"
+#         if: {{ st}}
