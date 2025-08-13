@@ -1,18 +1,16 @@
-name: "CI"
-
+name: CI on Self-Hosted
 on:
   push:
-
+    branches: [ main ]
 jobs:
-  quality:
-    runs-on: runner1
+  build:
+    runs-on: self-hosted
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: "Setup Biome"
-        uses: biomejs/setup-biome@v2
-        with:
-          version: "2.0.5"
-      - name: "Run Biome"
-        run: echo "bjr"
+      - uses: actions/checkout@v4
+      - name: Run a script
+        run: echo "Running on my self-hosted runner!"
+
+
+
+
 
