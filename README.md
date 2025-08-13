@@ -1,4 +1,4 @@
-# ga-training-app
+# ga-training-app modified
 
 To install dependencies:
 
