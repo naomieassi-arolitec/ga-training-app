@@ -5,7 +5,7 @@ on:
 
 jobs:
   quality:
-    runs-on: ubuntu-latest
+    runs-on: runner1
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -16,7 +16,7 @@ jobs:
       - name: "Run Biome"
         run: "biome ci ."
   test:
-    runs-on: ubuntu-latest
+    runs-on: runner1
     needs: quality
     steps:
       - name: "Checkout"
